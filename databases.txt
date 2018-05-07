@@ -1,3 +1,4 @@
+
 databases:
 CODECHEF{
 USERS:
@@ -13,4 +14,13 @@ POST:
  dislikes
  content
  }
+ 
+COMMENTS:
+{
+	id
+	postid
+	userid
+	comment
+	date
+}
  

@@ -1,17 +1,45 @@
 <?php
-
-$id=$_SERVER["QUERY_STRING"];
-$postid=(int)$id;
 $servername = "localhost";
 $username = "root";
 $password = "soham";
 $dbname = "CODECHEF";
+$name=$_COOKIE["user"];
+$id=$_SERVER["QUERY_STRING"];
+$postid=(int)$id;
+
+function postcomment($conn,$comment,$pid,$uid,$date_now)
+{
+echo $pid;
+$sql = "INSERT INTO COMMENTS (postid,userid, comment,date)
+VALUES ($pid,'$uid','$comment','$date_now')";
+if ($conn->query($sql) === TRUE) {
+    echo "New comment created successfully at postid=".$pid;
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+}
+
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+}
+
+if($_SERVER["REQUEST_METHOD"]=="POST")
+{
+	if(empty($_POST["commenthere"]))
+		echo "Please enter a comment!";
+	else
+	{
+		$comment=$_POST["commenthere"];
+		$date_now=date("Y/m/d");
+		echo $postid;
+		postcomment($conn,$comment,$postid,$name,$date_now);
+		
+		//header('Location:main.php');
+	}
 }
 
 $sql = "SELECT userid,title,content FROM POST where ID=".$postid;
@@ -31,7 +59,13 @@ if ($result->num_rows > 0) {
 } else {
     echo "0 results";
 }
-$conn->close();
+
+
+
+$sql = "SELECT userid, comment, date FROM COMMENTS WHERE postid=".$postid;
+$result = mysqli_query($conn, $sql);
+
+
 ?>
 
 
@@ -62,8 +96,14 @@ $conn->close();
 		<img src="logo.png" width="300" height="100">
         
       <ul id="nav-mobile" class="right hide-on-med-and-down">
+		  <li><span> <?php echo $name;?></span></li>
+	   &nbsp;&nbsp;
+		  <li><a href="main.php">Home</a></li>
+	&nbsp;&nbsp;
         <li><a href="about_us.html">About Us</a></li>
+		&nbsp;&nbsp;
         <li><a href="careers.html">Career</a></li>
+		 &nbsp;&nbsp;
         <li><a href="login-page.php">Logout</a></li>
       </ul>
     </div>
@@ -90,9 +130,9 @@ $conn->close();
      <hr>
 
       <h4>Leave a Comment:</h4>
-      <form role="form">
+      <form role="form" method="post" action="<?php echo "view.php?".$postid;?>">
         <div class="form-group">
-          <textarea class="form-control" rows="3" required></textarea>
+          <textarea class="form-control" name="commenthere" rows="3" required></textarea>
         </div>
         <button type="submit" class="btn btn-success">Submit</button>
       </form>
@@ -101,36 +141,37 @@ $conn->close();
       <p><span class="badge">2</span> Comments:</p><br>
       
       <div class="row">
-        <div class="col-sm-2 text-center">
-          <img src="bandmember.jpg" class="img-circle" height="65" width="65" alt="Avatar">
+		 
+		  <?php
+		 function showdata($who,$commentdate,$maincomment){
+		echo '
+         <div class="col-sm-10">
+          <h4>'. $who.'<small>'.$commentdate.'</small></h4>
+          <p>'.$maincomment.'</p>
+		  <br>
         </div>
-        <div class="col-sm-10">
-          <h4>Anja <small>Sep 29, 2015, 9:12 PM</small></h4>
-          <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <br>
-        </div>
-        <div class="col-sm-2 text-center">
-          <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-        </div>
-        <div class="col-sm-10">
-          <h4>John Row <small>Sep 25, 2015, 8:25 PM</small></h4>
-          <p>I am so happy for you man! Finally. I am looking forward to read about your trendy life. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          <br>
-          <p><span class="badge">1</span> Comment:</p><br>
-          <div class="row">
-            <div class="col-sm-2 text-center">
-              <img src="bird.jpg" class="img-circle" height="65" width="65" alt="Avatar">
-            </div>
-            <div class="col-xs-10">
-              <h4>Nested Bro <small>Sep 25, 2015, 8:28 PM</small></h4>
-              <p>Me too! WOW!</p>
-              <br>
-            </div>
-          </div>
-        </div>
-      </div>
+		';
+			  }
+		  
+		  if (mysqli_num_rows($result) > 0) {
+    // output data of each row
+    while($row = mysqli_fetch_assoc($result)) {
+        showdata($row["userid"],$row["date"],$row["comment"]);
+    }
+		  }
+		  else
+		  {
+			  echo '<div class="col-sm-10">
+          
+          <p>No comments found.</p>
+		  <br>
+        </div>';
+		  }
+		  
+		  $conn->close();
+			  ?>
     </div>
- 
+		</div>
    
 		<script type="text/javascript" src="js/materialize.min.js"></script>
     </body>
