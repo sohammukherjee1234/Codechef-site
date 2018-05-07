@@ -1,8 +1,11 @@
+
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<title>POST</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
 		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <!--Import materialize.css-->
       <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
@@ -30,15 +33,28 @@
 		<br>
 		<br>
 		<br>
-		<br>
-		<br>
-		<br>
+<form class="write_post" >
+  <div class="row">
+    <form class="col s12">
+      <div class="row">
+        <div class="input-field col s6">
+			
+          <input placeholder="Placeholder" id="title" type="text" class="validate" required>
+          <label for="title">Title</label>
+        </div>
+        
+		</div>
+    </form>
+  </div>
+       
+		
         
 		 <div class="form-group">
  
   			<textarea class="form-control" rows="20" id="comment"></textarea>
-			 <a class="waves-effect waves-light btn right"><i class="material-icons left">cloud</i>POST</a>
+			 <button type="button" class="btn btn-primary right" >POST</button>
 		</div> 
+		</form>
    
 		<script type="text/javascript" src="js/materialize.min.js"></script>
     </body>

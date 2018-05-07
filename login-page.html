@@ -1,21 +1,32 @@
- <head>
+
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>LOGIN</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head> 
 <body> <img src="logo.png"> </body>
 <div class="login-page"> 
   <div class="form">
-    <form class="register-form">
+	  <form class="register-form"><a id="registerform"></a>
       <input type="text" placeholder="name"/>
+		
       <input type="password" placeholder="password"/>
+		
       <input type="text" placeholder="email address"/>
-      <button>create</button>
-      <p class="message">Already registered? <a href="#">Sign In</a></p>
+			<button>create</button>
+      <p class="message">Already registered? <a href="#login-form">Sign In</a></p>
     </form>
-    <form class="login-form">
-      <input type="text" placeholder="username" required/>
-      <input type="password" placeholder="password" required/>
+	  <form class="login-form" ><a name="login-form"></a>
+      <input type="text" placeholder="username" name="username" required/>
+		
+      <input type="password" placeholder="password" name="password" required/>
+		
       <button>login</button>
-      <p class="message">Not registered? <a href="#">Create an account</a></p>
+      <p class="message">Not registered? <a href="#registerform">Create an account</a></p>
     </form>
   </div>
 </div>
+</html>
