@@ -36,10 +36,26 @@ PRIMARY KEY(ID)
 )";
 
 if (mysqli_query($conn, $sql)) {
-    echo "Table POSTS created successfully";
+    echo "Table POST created successfully";
 } else {
     echo "Error creating table: " . mysqli_error($conn);
 }
+
+$sql = "CREATE TABLE COMMENTS(
+id int NOT NULL AUTO_INCREMENT,
+userid VARCHAR(50) NOT NULL,
+postid int NOT NULL,
+comment VARCHAR(10000) NOT NULL,
+date VARCHAR(50) NOT NULL,
+PRIMARY KEY(id)
+)";
+
+if (mysqli_query($conn, $sql)) {
+    echo "Table COMMENT created successfully";
+} else {
+    echo "Error creating table COMMENT: " . mysqli_error($conn);
+}
+
 
 mysqli_close($conn);
 ?> 
